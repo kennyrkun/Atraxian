@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/kennyrkun/Atraxian.png?label=ready&title=Ready)](https://waffle.io/kennyrkun/Atraxian?utm_source=badge)
 # Atraxian
 A fake operating system written in C++ with [SFML 2.4](http://www.sfml-dev.org/)
 
