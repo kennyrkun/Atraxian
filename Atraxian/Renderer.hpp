@@ -3,12 +3,13 @@
 
 #include <SFML\Graphics.hpp>
 
+#include <memory>
 #include <vector>
 
 class Renderer
 {
 public:
-	Renderer(sf::RenderWindow *target_window);
+	Renderer(const std::shared_ptr<sf::RenderWindow>& targetWindow_);
 	~Renderer();
 
 	void addToQueue(sf::Drawable *object);
@@ -18,7 +19,7 @@ public:
 	void render();
 
 private:
-	sf::RenderWindow *window;
+	std::shared_ptr<sf::RenderWindow> targetWindow;
 	std::vector<sf::Drawable*> render_queue;
 };
 

@@ -100,13 +100,13 @@ namespace filesystem
 					logger::INFO("Success!");
 					return true;
 				}
-				else
+				else // already exists
 				{
 					logger::INFO("Specified file or directory already exists in destination directory.");
 					return false;
 				}
 			}
-			else
+			else // destination does not exits
 			{
 				logger::ERROR("Specified destination directory does not exist.");
 				return false;

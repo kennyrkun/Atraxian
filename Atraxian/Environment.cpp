@@ -18,13 +18,10 @@ Environment::Environment(sf::VideoMode dimensions, std::string title, int envID)
 	logger::INFO("Creating new Environment instance...");
 	environmentID = envID;
 
-	window = new sf::RenderWindow;
-	window->create(dimensions, (title + " (" + std::to_string(envID) + ")"), (sf::Style::Close | sf::Style::Titlebar));
+	window = std::make_shared<sf::RenderWindow>(dimensions, (title + " (" + std::to_string(envID) + ")"), (sf::Style::Close | sf::Style::Titlebar));
+	renderman = std::make_shared<Renderer>(window);
+	taskbar = std::make_shared<Taskbar>(this);
 	window->setFramerateLimit(60);
-
-	renderman = new Renderer(window);
-
-	taskbar = new Taskbar(this);
 
 	nullPane = new Pane(sf::Vector2f(0, 0), "null", 0, this);
 
@@ -35,11 +32,8 @@ Environment::~Environment()
 {
 	logger::INFO("Cleaning up...");
 
-	delete window;
-	delete taskbar;
-	delete renderman;
-	delete focusedPane;
-
+	window->close();
+	
 	logger::INFO("Environment destroyed.");
 }
 

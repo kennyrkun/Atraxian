@@ -1,9 +1,9 @@
 #include "Renderer.hpp"
 #include "logger.hpp"
 
-Renderer::Renderer(sf::RenderWindow *target_window)
+Renderer::Renderer(const std::shared_ptr<sf::RenderWindow>& targetWindow_)
 {
-	window = target_window;
+	targetWindow = targetWindow_;
 
 	logger::INFO("New Renderer instance created.");
 }
@@ -12,7 +12,7 @@ Renderer::~Renderer()
 {
 	render_queue.clear();
 
-	logger::INFO("Renderer isntance destroyed.");
+	logger::INFO("Renderer instance destroyed.");
 }
 
 void Renderer::addToQueue(sf::Drawable *object)
@@ -50,7 +50,7 @@ void Renderer::render()
 	{
 		for (size_t i = 0; i < render_queue.size(); i++)
 		{
-			window->draw(*render_queue[i]);
+			targetWindow.get()->draw(*render_queue[i]);
 		}
 	}
 }

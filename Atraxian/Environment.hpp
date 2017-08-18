@@ -1,7 +1,8 @@
 #ifndef ENVIRONMENT_HPP
 #define ENVIRONMENT_HPP
 
-#include <SFML\Graphics\RenderWindow.hpp>
+#include <SFML\Graphics.hpp>
+#include <memory>
 
 class Taskbar;
 class Pane;
@@ -15,9 +16,9 @@ public:
 
 	int environmentID;
 
-	sf::RenderWindow *window;
-	Taskbar *taskbar;
-	Renderer *renderman;
+	std::shared_ptr<sf::RenderWindow> window;
+	std::shared_ptr<Taskbar> taskbar;
+	std::shared_ptr<Renderer> renderman;
 
 	void main();
 	void switchFocusedPaneTo(Pane* pane);
@@ -28,6 +29,6 @@ private:
 	Pane *focusedPane = nullPane;
 };
 
-const std::string ENVIRONMENT_VERSION("0.0.642");
+const std::string ENVIRONMENT_VERSION("0.0.643");
 
 #endif /* ENVIRONMENT_HPP*/
