@@ -26,6 +26,10 @@ Taskbar::Taskbar(Environment *environment_)
 	time.setCharacterSize(bar.getLocalBounds().height - 16.0f);
 	time.setFillColor(sf::Color::Black);
 	time.setFont(font);
+	time.setString("00:00:00");
+
+	time.setOrigin(sf::Vector2f(time.getLocalBounds().width * 2, time.getLocalBounds().height * 2));
+	time.setPosition(sf::Vector2f((bar.getPosition().x * 2) - (time.getLocalBounds().width / 2), bar.getPosition().y - (time.getLocalBounds().height / 2)));
 
 	environment->renderman->addToQueue(&bar);
 	environment->renderman->addToQueue(&start_button);
