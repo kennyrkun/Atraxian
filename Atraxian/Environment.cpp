@@ -96,25 +96,32 @@ void Environment::main()
 								{
 									logger::INFO("Clicked inside the titlebar of Pane" + std::to_string(panes[i]->PID));
 
-									if (mouseIsOver(panes[i]->closebutton, *window)) // then the close button
-									{
-										logger::INFO("Clicked the close button of Pane" + std::to_string(panes[i]->PID));
-
-										renderman->removeFromQueue(&panes[i]->titletext);
-										renderman->removeFromQueue(&panes[i]->titlebar);
-										renderman->removeFromQueue(&panes[i]->mainpane);
-										renderman->removeFromQueue(&panes[i]->closebutton);
-										renderman->removeFromQueue(&panes[i]->leftborder);
-										renderman->removeFromQueue(&panes[i]->rightborder);
-										renderman->removeFromQueue(&panes[i]->bottomborder);
-
-										delete panes[i];
-										panes.erase(std::remove(panes.begin(), panes.end(), panes[i]), panes.end());
-										break;
-									}
-									else
+									if (!mouseIsOver(panes[i]->closebutton, *window)) // not on the close button
 									{
 										logger::INFO("Clicked only the titlebar, started dragging.");
+
+										sf::Vector2i mousePosition = sf::Mouse::getPosition();
+
+										logger::INFO("distance on y is: " + std::to_string(sf::Mouse::getPosition(*window).y - focusedPane->titlebar.getPosition().y) + " pixels.");
+
+										if (mousePosition.x > focusedPane->titlebar.getPosition().x)
+										{
+											logger::INFO("mouse is on left of titlebar");
+										}
+										else if (mousePosition.x > focusedPane->titlebar.getPosition().x)
+										{
+											logger::INFO("mouse is on right of titlebar");
+										}
+
+										logger::INFO("mouse pos" + std::to_string(sf::Mouse::getPosition(*window).y));
+										logger::INFO("titlebar pos" + std::to_string(focusedPane->titlebar.getPosition().y));
+
+										if (mousePosition.x > focusedPane->titlebar.getPosition().x)
+											logger::INFO("mouse over titlebar origin");
+										else if (mousePosition.x < focusedPane->titlebar.getPosition().x)
+											logger::INFO("mouse below titlebar origin");
+										else
+											logger::INFO("where the fuck is the mouse");
 
 										dragging_pane = true;
 									}
@@ -204,6 +211,32 @@ void Environment::main()
 //						we want to refocus the pane only if it was already focused.						
 					}
 				}
+				else if (mouseIsOver(focusedPane->boundingbox, *window)) // check if we're in the pane (and somehow don't crash the entire shitter)
+				{
+					logger::INFO("Released inside the boundingbox of Pane" + std::to_string(focusedPane->PID));
+
+					if (mouseIsOver(focusedPane->titlebar, *window)) // then on the title bar
+					{
+						logger::INFO("Released inside the titlebar of Pane" + std::to_string(focusedPane->PID));
+
+						if (mouseIsOver(focusedPane->closebutton, *window)) // then the close button
+						{
+							logger::INFO("Released the close button of Pane" + std::to_string(focusedPane->PID));
+
+							renderman->removeFromQueue(&focusedPane->titletext);
+							renderman->removeFromQueue(&focusedPane->titlebar);
+							renderman->removeFromQueue(&focusedPane->mainpane);
+							renderman->removeFromQueue(&focusedPane->closebutton);
+							renderman->removeFromQueue(&focusedPane->leftborder);
+							renderman->removeFromQueue(&focusedPane->rightborder);
+							renderman->removeFromQueue(&focusedPane->bottomborder);
+
+							delete focusedPane;
+							panes.erase(std::remove(panes.begin(), panes.end(), focusedPane), panes.end()); // remove it from the stack
+							focusedPane = nullPane;
+						}
+					}
+				}
 
 				if (dragging_pane)
 				{
@@ -262,6 +295,7 @@ void Environment::main()
 			else if (dragging_pane)
 			{
 				sf::Vector2i move_origin;
+
 				move_origin.x = sf::Mouse::getPosition(*window).x;
 				move_origin.y = sf::Mouse::getPosition(*window).y;
 
