@@ -108,25 +108,34 @@ void Environment::main()
 										sf::Vector2i mousePosition = sf::Mouse::getPosition();
 
 										logger::INFO("distance on y is: " + std::to_string(sf::Mouse::getPosition(*window).y - focusedPane->titlebar.getPosition().y) + " pixels.");
+										logger::INFO("mouse pos" + std::to_string(sf::Mouse::getPosition(*window).y));
+										logger::INFO("titlebar pos" + std::to_string(focusedPane->titlebar.getPosition().y));
+
+										const float x_diff = mousePosition.y - focusedPane->titlebar.getPosition().x;
+										const float y_diff = mousePosition.x - focusedPane->titlebar.getPosition().x;
+										logger::INFO("distance is: " + std::to_string(std::sqrt(x_diff * x_diff + y_diff * y_diff)));
 
 										if (mousePosition.x > focusedPane->titlebar.getPosition().x)
 										{
 											logger::INFO("mouse is on left of titlebar");
 										}
-										else if (mousePosition.x > focusedPane->titlebar.getPosition().x)
+										else if (mousePosition.x < focusedPane->titlebar.getPosition().x)
 										{
 											logger::INFO("mouse is on right of titlebar");
 										}
 
-										logger::INFO("mouse pos" + std::to_string(sf::Mouse::getPosition(*window).y));
-										logger::INFO("titlebar pos" + std::to_string(focusedPane->titlebar.getPosition().y));
-
-										if (mousePosition.x > focusedPane->titlebar.getPosition().x)
+										if (mousePosition.y > focusedPane->titlebar.getPosition().y)
+										{
 											logger::INFO("mouse over titlebar origin");
-										else if (mousePosition.x < focusedPane->titlebar.getPosition().x)
+										}
+										else if (mousePosition.y < focusedPane->titlebar.getPosition().y)
+										{
 											logger::INFO("mouse below titlebar origin");
+										}
 										else
+										{
 											logger::INFO("where the fuck is the mouse");
+										}
 
 										dragging_pane = true;
 									}
@@ -202,7 +211,13 @@ void Environment::main()
 
 			else if (event.type == sf::Event::EventType::MouseButtonReleased)
 			{
-				if (mouseIsOver(taskbar->bar, *window))
+				if (dragging_pane)
+				{
+					logger::INFO("Stopped dragging Pane" + std::to_string(focusedPane->PID) + ".");
+
+					dragging_pane = false;
+				}
+				else if (mouseIsOver(taskbar->bar, *window))
 				{
 					if (mouseIsOver(taskbar->start_button, *window)) // let go of the start menu
 					{
@@ -242,13 +257,6 @@ void Environment::main()
 						}
 					}
 				}
-
-				if (dragging_pane)
-				{
-					logger::INFO("Stopped dragging Pane" + std::to_string(focusedPane->PID) + ".");
-
-					dragging_pane = false;
-				}
 			}
 
 			else if (event.type == sf::Event::EventType::KeyPressed)
@@ -286,6 +294,20 @@ void Environment::main()
 					focusedPane = nullPane;
 				}
 			}
+			
+			else if (event.type == sf::Event::EventType::MouseMoved)
+			{
+				// if we are left clicking, panes exist, and are holding over the focused one, then move it to the position of the mouse. used for click and drag positioning.
+				if (dragging_pane)
+				{
+					sf::Vector2i move_position;
+
+					move_position.x = sf::Mouse::getPosition(*window).x;
+					move_position.y = sf::Mouse::getPosition(*window).y;
+
+					focusedPane->setPosition(sf::Vector2f(move_position));
+				}
+			}
 		} // event loop
 
 		{
@@ -295,16 +317,6 @@ void Environment::main()
 				focusedPane->setPosition(sf::Vector2f(window->getView().getCenter()));
 
 				logger::INFO("Pane" + std::to_string(focusedPane->PID) + " centered.");
-			}
-			// if we are left clicking, panes exist, and are holding over the focused one, then move it to the position of the mouse. used for click and drag positioning.
-			else if (dragging_pane)
-			{
-				sf::Vector2i move_origin;
-
-				move_origin.x = sf::Mouse::getPosition(*window).x;
-				move_origin.y = sf::Mouse::getPosition(*window).y;
-
-				focusedPane->setPosition(sf::Vector2f(move_origin));
 			}
 		}
 
