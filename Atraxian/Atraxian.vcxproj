@@ -134,6 +134,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="App.cpp" />
     <ClCompile Include="Environment.cpp" />
     <ClCompile Include="Filesystem.cpp" />
     <ClCompile Include="Logger.cpp" />
@@ -147,6 +148,7 @@
     <ClCompile Include="Util.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="App.hpp" />
     <ClInclude Include="Environment.hpp" />
     <ClInclude Include="Filesystem.hpp" />
     <ClInclude Include="Logger.hpp" />

@@ -66,7 +66,7 @@ void Environment::switchFocusedPaneTo(Pane* pane)
 void Environment::main()
 {
 	renderer->addToQueue(&taskbar->bar);
-	renderer->addToQueue(&taskbar->start_button);
+	renderer->addToQueue(&taskbar->startButton);
 	renderer->addToQueue(&taskbar->div);
 //	renderer->addToQueue(&taskbar->time);
 
@@ -176,11 +176,11 @@ void Environment::main()
 
 					if (mouseIsOver(taskbar->bar, *window)) // if we click the taskbar
 					{
-						if (mouseIsOver(taskbar->start_button, *window)) // clicked the startbutton
+						if (mouseIsOver(taskbar->startButton, *window)) // clicked the startbutton
 						{
 							logger::INFO("Clicked the start button.");
 
-							taskbar->start_button.setFillColor(sf::Color::Green);
+							taskbar->startButton.setFillColor(sf::Color::Green);
 
 							if (!panes.empty())																				// TODO: this
 								focusedPane->defocus(); // we defocus it because we are focused on the start menu while we do this, we will refocus when the start menu is closed.
@@ -193,11 +193,11 @@ void Environment::main()
 			{
 				if (mouseIsOver(taskbar->bar, *window))
 				{
-					if (mouseIsOver(taskbar->start_button, *window)) // let go of the start menu
+					if (mouseIsOver(taskbar->startButton, *window)) // let go of the start menu
 					{
 						logger::INFO("Released the start button.");
 
-						taskbar->start_button.setFillColor(sf::Color::Red);
+						taskbar->startButton.setFillColor(sf::Color::Red);
 
 //						if (!panes.empty() && focusedPane->focused == true)
 //							focusedPane->focus(); // refocus the panel.
@@ -255,10 +255,6 @@ void Environment::main()
 				focusedPane->setPosition(sf::Vector2f(move_origin));
 			}
 		}
-
-//		taskbar->time.setString(environment::getTimestamp());
-//		taskbar->time.setOrigin(sf::Vector2f(taskbar->time.getLocalBounds().width / 2, taskbar->time.getLocalBounds().height / 2));
-//		taskbar->time.setPosition(sf::Vector2f((taskbar->bar.getPosition().x * 2) - (taskbar->time.getLocalBounds().width / 1.7), taskbar->bar.getPosition().y - (taskbar->time.getLocalBounds().height / 2.5)));
 
 		window->clear(sf::Color::Blue);
 		renderer->render();

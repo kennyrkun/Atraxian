@@ -12,19 +12,17 @@ public:
 	~Taskbar();
 
 	sf::RectangleShape bar;
-	sf::RectangleShape start_button;
 	sf::RectangleShape div;
-//	sf::Text time;
+	sf::RectangleShape startButton;
 
-	bool is_start_open;
-	bool is_hidden;
+	bool isStartMenuOpen;
+	bool isTaskbarHidden;
 
-	void open_start_menu();
-	void close_start_menu();
+	void openStartMenu();
+	void closeStartMenu();
 
 private:
 	Environment *environment;
-//	sf::Font font;
 };
 
 #endif /* TASKBAR_HPP */

@@ -10,19 +10,14 @@ Taskbar::Taskbar(Environment *environment)
 	bar.setOrigin(bar.getSize().x / 2.0f, bar.getSize().y / 2.0f); // center it
 	bar.setPosition(environment->window->getSize().x / 2.0f, (environment->window->getSize().y - (bar.getLocalBounds().height / 2.0f)));
 
-	start_button.setFillColor(sf::Color::Red);
-	start_button.setSize(sf::Vector2f(40, 40));
-	start_button.setOrigin(start_button.getLocalBounds().width / 2, start_button.getLocalBounds().height / 2);
-	start_button.setPosition(bar.getLocalBounds().left + 20, bar.getPosition().y);
+	startButton.setFillColor(sf::Color::Red);
+	startButton.setSize(sf::Vector2f(40, 40));
+	startButton.setOrigin(startButton.getLocalBounds().width / 2, startButton.getLocalBounds().height / 2);
+	startButton.setPosition(bar.getLocalBounds().left + 20, bar.getPosition().y);
 
-	div.setSize(sf::Vector2f(start_button.getLocalBounds().height / 18, bar.getLocalBounds().height - 4.0f));
-	div.setPosition(start_button.getPosition().x + start_button.getLocalBounds().width / 2 + div.getLocalBounds().width, bar.getPosition().y - div.getLocalBounds().height / 2);
+	div.setSize(sf::Vector2f(startButton.getLocalBounds().height / 18, bar.getLocalBounds().height - 4.0f));
+	div.setPosition(startButton.getPosition().x + startButton.getLocalBounds().width / 2 + div.getLocalBounds().width, bar.getPosition().y - div.getLocalBounds().height / 2);
 	div.setFillColor(sf::Color::Black);
-
-//	font.loadFromFile("C:\\Windows\\Fonts\\Arial.ttf");
-//	time.setCharacterSize(bar.getLocalBounds().height - 16.0f);
-//	time.setFillColor(sf::Color::Black);
-//	time.setFont(font);
 
 	logger::INFO("New taskbar created.");
 }
@@ -32,14 +27,14 @@ Taskbar::~Taskbar()
 	logger::INFO("Taskbar destroyed.");
 }
 
-void Taskbar::open_start_menu()
+void Taskbar::openStartMenu()
 {
-	is_start_open = true;
-	start_button.setFillColor(sf::Color::Green);
+	isStartMenuOpen = true;
+	startButton.setFillColor(sf::Color::Green);
 }
 
-void Taskbar::close_start_menu()
+void Taskbar::closeStartMenu()
 {
-	is_start_open = false;
-	start_button.setFillColor(sf::Color::Red);
+	isStartMenuOpen = false;
+	startButton.setFillColor(sf::Color::Red);
 }

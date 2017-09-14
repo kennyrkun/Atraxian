@@ -14,6 +14,15 @@
     <Filter Include="Source Files\Environment\Pane">
       <UniqueIdentifier>{c245db0d-939b-4bf4-96f7-db9604de609f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Environment\Maple">
+      <UniqueIdentifier>{fff392fb-49c0-4907-b10c-1201fb0397ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Environment\Maple\Parser">
+      <UniqueIdentifier>{c201dbdb-af3e-44d9-90d7-43885af38e75}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Environment\Maple\App">
+      <UniqueIdentifier>{a7482183-bce1-47a4-9801-be99730e359a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -37,11 +46,14 @@
     <ClCompile Include="Pane.cpp">
       <Filter>Source Files\Environment\Pane</Filter>
     </ClCompile>
-    <ClCompile Include="MapleParser.cpp">
-      <Filter>Source Files\Environment\Pane</Filter>
-    </ClCompile>
     <ClCompile Include="Util.cpp">
       <Filter>Source Files\Environment</Filter>
+    </ClCompile>
+    <ClCompile Include="MapleParser.cpp">
+      <Filter>Source Files\Environment\Maple\Parser</Filter>
+    </ClCompile>
+    <ClCompile Include="App.cpp">
+      <Filter>Source Files\Environment\Maple\App</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -63,11 +75,14 @@
     <ClInclude Include="Pane.hpp">
       <Filter>Source Files\Environment\Pane</Filter>
     </ClInclude>
-    <ClInclude Include="MapleParser.hpp">
-      <Filter>Source Files\Environment\Pane</Filter>
-    </ClInclude>
     <ClInclude Include="Util.hpp">
       <Filter>Source Files\Environment</Filter>
+    </ClInclude>
+    <ClInclude Include="MapleParser.hpp">
+      <Filter>Source Files\Environment\Maple\Parser</Filter>
+    </ClInclude>
+    <ClInclude Include="App.hpp">
+      <Filter>Source Files\Environment\Maple\App</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

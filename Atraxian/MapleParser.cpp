@@ -54,7 +54,10 @@ bool MapleParser::loadApp(std::string appdir)
 				// dimensions
 				app_dimensions = getAppDimensions(dir + "settings.cfg");
 				// properties
+				// author
 				createApp();
+
+				return true;
 			}
 			else // settings.cfg
 			{
