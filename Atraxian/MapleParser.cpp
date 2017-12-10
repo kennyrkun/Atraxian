@@ -1,6 +1,7 @@
 #include "MapleParser.hpp"
 #include "Filesystem.hpp"
 #include "Logger.hpp"
+#include "SettingsParser.hpp"
 
 #include <fstream>
 #include <limits>
@@ -41,27 +42,34 @@ bool MapleParser::loadApp(std::string appdir)
 	{
 		std::string dir = appdir + "//";
 
+		std::string tempname = appdir.substr(appdir.find_last_of('//'), appdir.length());
+
 		if (environment::filesystem::exists(dir + "main.mpl"))
 		{
 			logger::CUSTOM("MAPLE", "Found main.mpl for `" + appdir + "`.");
 
-			if (environment::filesystem::exists(dir + "settings.cfg"))
+			if (environment::filesystem::exists(dir + tempname + ".conf"))
 			{
-				// name
-				app_name = getAppName(dir + "settings.cfg");
-				// description
-				app_description = getAppDescription(dir + "settings.cfg");
-				// dimensions
-				app_dimensions = getAppDimensions(dir + "settings.cfg");
-				// properties
-				// author
+				SettingsParser getAppSettings;
+				getAppSettings.loadFromFile(dir + tempname + ".conf");
+
+				getAppSettings.get("appName", appInfo.name);
+				getAppSettings.get("description", appInfo.description);
+				getAppSettings.get("dimensions", appInfo.dimensions);
+				getAppSettings.get("author", appInfo.author);
+				getAppSettings.get("copyright", appInfo.copyright);
+				getAppSettings.get("properties", appInfo.properties);
+				getAppSettings.get("kunlauncher", appInfo.kunlauncher);
+				getAppSettings.get("github", appInfo.github);
+				getAppSettings.get("misc", appInfo.misc);
+
 				createApp();
 
 				return true;
 			}
 			else // settings.cfg
 			{
-				logger::CUSTOM("MAPLE", "No settings.cfg file was found for '" + appdir + "', aborting.");
+				logger::CUSTOM("MAPLE", "No " + appdir + ".conf file was found for '" + appdir + "', aborting.");
 
 				return false;
 			}
@@ -103,14 +111,14 @@ std::string MapleParser::getAppName(std::string settingsfile)
 		}
 		else
 		{
-			logger::CUSTOM("MMAPLE-ERROR", "Failed to open settings file!");
+			logger::CUSTOM("MAPLE-ERROR", "Failed to open settings file!");
 
 			return "FAILED";
 		}
 	}
 	else
 	{
-		logger::CUSTOM("MMAPLE-ERROR", "Could not find settings.cfg!");
+		logger::CUSTOM("MAPLE-ERROR", "Could not find settings.cfg!");
 
 		return "FAILED";
 	}
@@ -138,56 +146,30 @@ std::string MapleParser::getAppDescription(std::string settingsfile)
 		}
 		else
 		{
-			logger::CUSTOM("MMAPLE-ERROR", "Failed to open settings file!");
+			logger::CUSTOM("MAPLE-ERROR", "Failed to open settings file!");
 
 			return "FAILED";
 		}
 	}
 	else
 	{
-		logger::CUSTOM("MMAPLE-ERROR", "Could not find settings.cfg!");
+		logger::CUSTOM("MAPLE-ERROR", "Could not find settings.cfg!");
 
 		return "FAILED";
 	}
-}
-
-void MapleParser::createApp()
-{
-	logger::INFO("No, fuck yoU!");
 }
 
 sf::Vector2f MapleParser::getAppDimensions(std::string settingsfile)
 {
 	if (environment::filesystem::exists(settingsfile))
 	{
-		std::ifstream getDimensions(settingsfile);
+		SettingsParser getDimensions;
+		getDimensions.loadFromFile(settingsfile);
 
-		if (getDimensions.is_open())
-		{
-			// probably not the best method, but here goes.
+		sf::Vector2f dimensions;
+		getDimensions.get("dimensions", dimensions);
 
-			GotoLine(getDimensions, 3);
-			std::string s_sizeX;
-			getline(getDimensions, s_sizeX);
-			std::string s_sizeY;
-			getline(getDimensions, s_sizeY);
-
-			s_sizeX.erase(0, 12);
-			s_sizeY.erase(0, 12);
-
-			float sizeX = std::stof(s_sizeX);
-			float sizeY = std::stof(s_sizeY);
-
-			logger::CUSTOM("MAPLE", "X: " + std::to_string(sizeX) + ", Y: " + std::to_string(sizeY));
-
-			return sf::Vector2f(sizeX, sizeY);
-		}
-		else
-		{
-			logger::CUSTOM("MMAPLE-ERROR", "Failed to open settings file!");
-
-			return sf::Vector2f(0, 0);
-		}
+		return dimensions;
 	}
 	else
 	{
@@ -195,4 +177,9 @@ sf::Vector2f MapleParser::getAppDimensions(std::string settingsfile)
 
 		return sf::Vector2f(0, 0);
 	}
+}
+
+void MapleParser::createApp()
+{
+	logger::INFO("Created App!");
 }

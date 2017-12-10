@@ -4,15 +4,26 @@
 #include <SFML\System\Vector2.hpp>
 #include <string>
 
+struct AppInfo
+{
+	std::string name;
+	std::string description;
+	sf::Vector2f dimensions;
+	std::string properties;
+	std::string author;
+	std::string copyright;
+	std::string github;
+	std::string kunlauncher;
+	std::string misc;
+};
+
 class MapleParser
 {
 public:
 	MapleParser(std::string app);
 	~MapleParser();
 
-	std::string app_name;
-	std::string app_description;
-	sf::Vector2f app_dimensions;
+	AppInfo appInfo;
 
 private:
 	bool loadApp(std::string appdir);
