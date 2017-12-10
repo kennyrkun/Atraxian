@@ -27,9 +27,6 @@ public:
 
 private:
 	bool loadApp(std::string appdir);
-	std::string getAppName(std::string settingsfile);
-	std::string getAppDescription(std::string settingsfile);
-	sf::Vector2f getAppDimensions(std::string settingsfile);
 	void createApp();
 };
 
