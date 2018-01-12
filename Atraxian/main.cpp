@@ -22,5 +22,7 @@ int main()
 	one.join();
 
 	logger::INFO("Exiting...");
+
+	std::cin.get();
 	return 0;
 }

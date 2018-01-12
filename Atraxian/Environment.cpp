@@ -9,7 +9,7 @@
 
 #include <ctime>
 
-Environment::Environment(sf::VideoMode dimensions, std::string title, int envID)
+Environment::Environment(sf::VideoMode dimensions, std::string title, int envID) : environmentID(envID)
 {
 	if (!environment::util::fs_ready())
 		environment::util:: ready_fs();
@@ -17,11 +17,9 @@ Environment::Environment(sf::VideoMode dimensions, std::string title, int envID)
 	logger::setOutputDir("root", ("environment" + std::to_string(envID)));
 
 	logger::INFO("Creating new Environment instance...");
-	environmentID = envID;
 
 	window = new sf::RenderWindow;
 	window->create(dimensions, (title + " (" + std::to_string(envID) + ")"), (sf::Style::Close | sf::Style::Titlebar));
-	window->setFramerateLimit(60);
 
 	renderer = new Renderer(this);
 
@@ -125,6 +123,8 @@ void Environment::main()
 								{
 									already_selected = true;
 
+									focusedPane->handleEvents(event);
+
 									logger::SILENT("EXTRA-INFO", "Pane" + std::to_string(focusedPane->PID) + " was already focused.");
 								}
 								else // wasn't already selected.
@@ -182,7 +182,7 @@ void Environment::main()
 
 							taskbar->startButton.setFillColor(sf::Color::Green);
 
-							if (!panes.empty())																				// TODO: this
+							if (!panes.empty())
 								focusedPane->defocus(); // we defocus it because we are focused on the start menu while we do this, we will refocus when the start menu is closed.
 						}
 					}

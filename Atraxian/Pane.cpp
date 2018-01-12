@@ -7,6 +7,10 @@
 const float titlebar_height = 32.0f;
 const float border_width = 6.25f;
 
+const sf::Color focusedColour(109, 109, 109);
+const sf::Color defocusedColour(200, 200, 200);
+
+
 Pane::Pane(std::string title, Environment *env) : environment(env)
 {
 	MapleParser app(title);
@@ -16,6 +20,7 @@ Pane::Pane(std::string title, Environment *env) : environment(env)
 
 	font.loadFromFile("C:\\Windows\\Fonts\\Arial.ttf");
 	titletext.setFont(font);
+	titletext.setFillColor(sf::Color::Black);
 	title = paneInfo.name;
 
 	setSize(app.appInfo.dimensions);
@@ -27,14 +32,15 @@ Pane::Pane(std::string title, Environment *env) : environment(env)
 	logger::INFO("\"" + title + "\" created. (Pane" + std::to_string(PID) + ")");
 }
 
-Pane::Pane(const sf::Vector2f size, const std::string $title, Environment *env) // THIS METHOD SHOULD BE USED FOR DEBUGGING ONLY.
+Pane::Pane(const sf::Vector2f size, const std::string $title, Environment *env) : environment(env) // THIS METHOD SHOULD BE USED FOR DEBUGGING ONLY.
 {
-	environment = env;
 	title = $title;
 
 	PID = env->panes.size() + 1;
 	font.loadFromFile("C:\\Windows\\Fonts\\Arial.ttf");
 	titletext.setFont(font);
+	titletext.setFillColor(sf::Color::Black);
+
 	setSize(size);
 	setPosition(env->window->getView().getCenter());
 	setTitle(title);
@@ -50,12 +56,10 @@ Pane::~Pane()
 	logger::INFO("Destroyed Pane" + std::to_string(PID) + ".");
 }
 
-const sf::Color focusedColour(109, 109, 109);
-const sf::Color defocusedColour(190, 190, 190);
-
 void Pane::setPosition(const sf::Vector2f newpos)
 {
 	titlebar.setPosition(newpos);
+	titletext.setPosition(sf::Vector2f(titlebar.getPosition().x - (titlebar.getSize().x / 2), titlebar.getPosition().y - (titlebar.getSize().y / 2)));
 
 //	//	g j p q y
 //	if (title.find('p') != std::string::npos)
@@ -78,6 +82,7 @@ void Pane::setTitle(const std::string new_title)
 
 	titletext.setString(new_title);
 //	titletext.setOrigin(titletext.getLocalBounds().width / 2, titletext.getLocalBounds().height / 2);
+	titletext.setPosition(sf::Vector2f(titlebar.getPosition().x - (titlebar.getSize().x / 2), titlebar.getPosition().y - (titlebar.getSize().y / 2)));
 
 //	if (new_title.find('p') != std::string::npos ||
 //		new_title.find('g') != std::string::npos ||
@@ -170,7 +175,7 @@ void Pane::setSize(const sf::Vector2f size)
 	titlebar.setSize(sf::Vector2f(mainpane.getLocalBounds().width, titlebar_height));
 	titlebar.setOrigin(sf::Vector2f(titlebar.getLocalBounds().width / 2, titlebar.getLocalBounds().height / 2));
 
-	titletext.setCharacterSize(static_cast<int>(titlebar.getLocalBounds().height) - 8);
+	titletext.setCharacterSize(static_cast<int>(titlebar.getLocalBounds().height) - 10);
 //	titletext.setOrigin(sf::Vector2f(titletext.getLocalBounds().width / 2, titletext.getLocalBounds().height / 2));
 
 	closebutton.setFillColor(sf::Color::Red);

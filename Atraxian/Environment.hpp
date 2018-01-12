@@ -28,6 +28,6 @@ private:
 	Pane *focusedPane = nullPane;
 };
 
-const std::string ENVIRONMENT_VERSION("0.0.65");
+const std::string ENVIRONMENT_VERSION("0.10.0");
 
 #endif /* ENVIRONMENT_HPP*/

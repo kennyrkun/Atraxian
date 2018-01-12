@@ -56,7 +56,7 @@
       <Filter>Source Files\Environment\Maple\App</Filter>
     </ClCompile>
     <ClCompile Include="SettingsParser.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Environment</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -87,6 +87,8 @@
     <ClInclude Include="App.hpp">
       <Filter>Source Files\Environment\Maple\App</Filter>
     </ClInclude>
-    <ClInclude Include="SettingsParser.hpp" />
+    <ClInclude Include="SettingsParser.hpp">
+      <Filter>Source Files\Environment</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

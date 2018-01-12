@@ -11,9 +11,12 @@ Renderer::Renderer(Environment *target_env)
 
 Renderer::~Renderer()
 {
+	for (size_t i = 0; i < render_queue.size(); i++)
+		delete render_queue[i];
+
 	render_queue.clear();
 
-	logger::INFO("Renderer isntance destroyed.");
+	logger::INFO("Renderer instance destroyed.");
 }
 
 void Renderer::addToQueue(sf::Drawable *object)
@@ -27,7 +30,12 @@ void Renderer::removeFromQueue(sf::Drawable *object) // still gives us memory le
 	{
 		if (object == render_queue[i])
 		{
+			// render_queue[i];
 			render_queue.erase(std::remove(render_queue.begin(), render_queue.end(), object), render_queue.end());
+
+			//FIXME: memory leaks here
+			// attempting to do render_queue[i] instead of object causes a breakpoint to be triggered.
+			// supposedly after deleting the object, but this is untested.
 
 			break;
 		}
