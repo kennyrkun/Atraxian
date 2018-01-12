@@ -17,4 +17,15 @@ struct AppInfo
 	std::string misc;
 };
 
+class App
+{
+	AppInfo appInfo;
+	Pane pane;
+};
+
+// app will the primary class for applications for atraxian
+// it will have a pane if it wants to use one
+//	perhaps it should extend from pane if it wants to be drawn
+//  or maybe all apps should have a pane, and just not show it if they don't want to
+
 #endif // !APP_HPP

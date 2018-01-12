@@ -2,6 +2,7 @@
 #define PANE_HPP
 
 #include "Environment.hpp"
+#include "MapleParser.hpp"
 
 #include <SFML\Graphics.hpp>
 
@@ -16,6 +17,7 @@ public:
 	~Pane();
 
 	std::string title;
+	AppInfo paneInfo;
 
 	sf::RectangleShape mainpane;
 	sf::RectangleShape titlebar;
@@ -37,6 +39,8 @@ public:
 	void focus();
 	void defocus();
 	void setVisible(bool yesno);
+
+	void handleEvents(const sf::Event &event);
 
 private:
 	Environment *environment;

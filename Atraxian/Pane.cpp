@@ -1,27 +1,26 @@
+#include "Pane.hpp"
+
 #include "Environment.hpp"
 #include "Renderer.hpp"
-#include "Pane.hpp"
 #include "Logger.hpp"
-#include "MapleParser.hpp"
 
 const float titlebar_height = 32.0f;
 const float border_width = 6.25f;
 
-Pane::Pane(std::string app_name, Environment *env)
+Pane::Pane(std::string title, Environment *env) : environment(env)
 {
-	MapleParser app(app_name);
+	MapleParser app(title);
+	paneInfo = app.appInfo; // TODO: get paneInfo out of here
 
-	environment = env;
 	PID = env->panes.size() + 1;
 
 	font.loadFromFile("C:\\Windows\\Fonts\\Arial.ttf");
 	titletext.setFont(font);
-	title = app.app_name;
-//	setTitle(title); // because it relies on setPos
+	title = paneInfo.name;
 
-	setSize(app.app_dimensions);
+	setSize(app.appInfo.dimensions);
 	setPosition(env->window->getView().getCenter());
-	setTitle(title); // because it relies on setPos
+	setTitle(title); // relies on things being in place already
 
 	setVisible(true);
 
@@ -58,11 +57,11 @@ void Pane::setPosition(const sf::Vector2f newpos)
 {
 	titlebar.setPosition(newpos);
 
-	//	g j p q y
-	if (title.find('p') != std::string::npos)
-		titletext.setPosition(titlebar.getPosition().x - (closebutton.getLocalBounds().width / 2), titlebar.getPosition().y - (titletext.getLocalBounds().height / 2) + 6);
-	else
-		titletext.setPosition(titlebar.getPosition().x - (closebutton.getLocalBounds().width / 2), titlebar.getPosition().y - (titletext.getLocalBounds().height / 2) + 2);
+//	//	g j p q y
+//	if (title.find('p') != std::string::npos)
+//		titletext.setPosition(titlebar.getPosition().x - (closebutton.getLocalBounds().width / 2), titlebar.getPosition().y - (titletext.getLocalBounds().height / 2) + 6);
+//	else
+//		titletext.setPosition(titlebar.getPosition().x - (closebutton.getLocalBounds().width / 2), titlebar.getPosition().y - (titletext.getLocalBounds().height / 2) + 2);
 
 	mainpane.setPosition(titlebar.getPosition().x, titlebar.getPosition().y + mainpane.getLocalBounds().height / 2 + (titlebar.getLocalBounds().height / 2));
 	closebutton.setPosition((titlebar.getPosition().x + titlebar.getLocalBounds().width / 2) - (closebutton.getLocalBounds().width / 2), titlebar.getPosition().y);
@@ -74,18 +73,21 @@ void Pane::setPosition(const sf::Vector2f newpos)
 
 void Pane::setTitle(const std::string new_title)
 {
+	//TODO: make this work properly
+	// we don't need it centered, we want it to the riding on the right edge of the left border
+
 	titletext.setString(new_title);
-	titletext.setOrigin(titletext.getLocalBounds().width / 2, titletext.getLocalBounds().height / 2);
+//	titletext.setOrigin(titletext.getLocalBounds().width / 2, titletext.getLocalBounds().height / 2);
 
-	if (new_title.find('p') != std::string::npos ||
-		new_title.find('g') != std::string::npos ||
-		new_title.find('j') != std::string::npos ||
-		new_title.find('q') != std::string::npos ||
-		new_title.find('y') != std::string::npos)
+//	if (new_title.find('p') != std::string::npos ||
+//		new_title.find('g') != std::string::npos ||
+//		new_title.find('j') != std::string::npos ||
+//		new_title.find('q') != std::string::npos ||
+//		new_title.find('y') != std::string::npos)
 
-		titletext.setPosition(titlebar.getPosition().x - (closebutton.getLocalBounds().width / 2), titlebar.getPosition().y - (titletext.getLocalBounds().height / 2) + 6);
-	else
-		titletext.setPosition(titlebar.getPosition().x - (closebutton.getLocalBounds().width / 2), titlebar.getPosition().y - (titletext.getLocalBounds().height / 2) + 2);
+//		titletext.setPosition(titlebar.getPosition().x - (closebutton.getLocalBounds().width / 2), titlebar.getPosition().y - (titletext.getLocalBounds().height / 2) + 6);
+//	else
+//		titletext.setPosition(titlebar.getPosition().x - (closebutton.getLocalBounds().width / 2), titlebar.getPosition().y - (titletext.getLocalBounds().height / 2) + 2);
 }
 
 void Pane::resize(const sf::Vector2f newsize)
@@ -132,6 +134,7 @@ void Pane::setVisible(bool yesno)
 		environment->renderer->addToQueue(&bottomborder);
 
 		visible = true;
+		// or should it be visible = !visible;
 	}
 	else
 	{
@@ -146,6 +149,11 @@ void Pane::setVisible(bool yesno)
 
 		visible = false;
 	}
+}
+
+void Pane::handleEvents(const sf::Event & event)
+{
+	logger::INFO("pane got events");
 }
 
 // PRIVATE
@@ -163,7 +171,7 @@ void Pane::setSize(const sf::Vector2f size)
 	titlebar.setOrigin(sf::Vector2f(titlebar.getLocalBounds().width / 2, titlebar.getLocalBounds().height / 2));
 
 	titletext.setCharacterSize(static_cast<int>(titlebar.getLocalBounds().height) - 8);
-	titletext.setOrigin(sf::Vector2f(titletext.getLocalBounds().width / 2, titletext.getLocalBounds().height / 2));
+//	titletext.setOrigin(sf::Vector2f(titletext.getLocalBounds().width / 2, titletext.getLocalBounds().height / 2));
 
 	closebutton.setFillColor(sf::Color::Red);
 	closebutton.setSize(sf::Vector2f(titlebar.getLocalBounds().height, titlebar.getLocalBounds().height));
