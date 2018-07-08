@@ -1,8 +1,9 @@
 #ifndef APP_HPP
 #define APP_HPP
 
-#include <string>
 #include <SFML\System\Vector2.hpp>
+
+#include <string>
 
 struct AppInfo
 {
@@ -19,8 +20,11 @@ struct AppInfo
 
 class App
 {
+public:
+	App();
+	~App();
+
 	AppInfo appInfo;
-	Pane pane;
 };
 
 // app will the primary class for applications for atraxian

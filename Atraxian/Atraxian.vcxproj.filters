@@ -11,9 +11,6 @@
     <Filter Include="Source Files\Logger">
       <UniqueIdentifier>{00b54a81-ff50-40a6-8b13-a695fefcf83a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Environment\Pane">
-      <UniqueIdentifier>{c245db0d-939b-4bf4-96f7-db9604de609f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Environment\Maple">
       <UniqueIdentifier>{fff392fb-49c0-4907-b10c-1201fb0397ec}</UniqueIdentifier>
     </Filter>
@@ -22,6 +19,9 @@
     </Filter>
     <Filter Include="Source Files\Environment\Maple\App">
       <UniqueIdentifier>{a7482183-bce1-47a4-9801-be99730e359a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Environment\Process">
+      <UniqueIdentifier>{c245db0d-939b-4bf4-96f7-db9604de609f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -44,7 +44,7 @@
       <Filter>Source Files\Logger</Filter>
     </ClCompile>
     <ClCompile Include="Pane.cpp">
-      <Filter>Source Files\Environment\Pane</Filter>
+      <Filter>Source Files\Environment\Process</Filter>
     </ClCompile>
     <ClCompile Include="Util.cpp">
       <Filter>Source Files\Environment</Filter>
@@ -52,11 +52,14 @@
     <ClCompile Include="MapleParser.cpp">
       <Filter>Source Files\Environment\Maple\Parser</Filter>
     </ClCompile>
-    <ClCompile Include="App.cpp">
-      <Filter>Source Files\Environment\Maple\App</Filter>
-    </ClCompile>
     <ClCompile Include="SettingsParser.cpp">
       <Filter>Source Files\Environment</Filter>
+    </ClCompile>
+    <ClCompile Include="Process.cpp">
+      <Filter>Source Files\Environment\Process</Filter>
+    </ClCompile>
+    <ClCompile Include="App.cpp">
+      <Filter>Source Files\Environment\Process</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -76,7 +79,7 @@
       <Filter>Source Files\Logger</Filter>
     </ClInclude>
     <ClInclude Include="Pane.hpp">
-      <Filter>Source Files\Environment\Pane</Filter>
+      <Filter>Source Files\Environment\Process</Filter>
     </ClInclude>
     <ClInclude Include="Util.hpp">
       <Filter>Source Files\Environment</Filter>
@@ -84,11 +87,14 @@
     <ClInclude Include="MapleParser.hpp">
       <Filter>Source Files\Environment\Maple\Parser</Filter>
     </ClInclude>
-    <ClInclude Include="App.hpp">
-      <Filter>Source Files\Environment\Maple\App</Filter>
-    </ClInclude>
     <ClInclude Include="SettingsParser.hpp">
       <Filter>Source Files\Environment</Filter>
+    </ClInclude>
+    <ClInclude Include="Process.hpp">
+      <Filter>Source Files\Environment\Process</Filter>
+    </ClInclude>
+    <ClInclude Include="App.hpp">
+      <Filter>Source Files\Environment\Process</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

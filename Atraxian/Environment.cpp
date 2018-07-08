@@ -4,6 +4,8 @@
 #include "Renderer.hpp"
 #include "Taskbar.hpp"
 #include "Pane.hpp"
+#include "App.hpp"
+#include "Process.hpp"
 #include "MapleParser.hpp"
 #include "Util.hpp"
 
@@ -54,7 +56,7 @@ bool mouseIsOver(sf::Shape &object, sf::RenderWindow &window)
 
 void Environment::switchFocusedPaneTo(Pane* pane)
 {
-	if (panes.size() > 1 && pane != nullPane)
+	if (processes.size() > 1 && pane != nullPane)
 		focusedPane->defocus();
 
 	focusedPane = pane;
@@ -77,7 +79,7 @@ void Environment::main()
 		{
 			if (event.type == sf::Event::EventType::Closed)
 			{
-				panes.clear();
+				processes.clear();
 				renderer->clearQueue();
 				window->close();
 				return;
@@ -87,28 +89,28 @@ void Environment::main()
 			{
 				if (event.key.code == sf::Mouse::Left)
 				{
-					if (!panes.empty()) // make sure there are panes
+					if (!processes.empty()) // make sure there are panes
 					{
 						bool selected(false);
 						bool already_selected(false);
 
 						// if we clicked on any pane
-						for (int i = panes.size() - 1; i >= 0; i--)
+						for (int i = processes.size() - 1; i >= 0; i--)
 						{
-							if (mouseIsOver(panes[i]->boundingbox, *window) && panes[i]->visible) // check if we're in the pane, and it's visible
+							if (mouseIsOver(processes[i]->pane->boundingbox, *window) && processes[i]->pane->visible) // check if we're in the pane, and it's visible
 							{
-								logger::SILENT("EXTRA-INFO", "Clicked inside the boundingbox of Pane" + std::to_string(panes[i]->PID));
+								logger::SILENT("EXTRA-INFO", "Clicked inside the boundingbox of Pane" + std::to_string(processes[i]->info.pid));
 
-								if (mouseIsOver(panes[i]->titlebar, *window)) // then on the title bar
+								if (mouseIsOver(processes[i]->pane->titlebar, *window)) // then on the title bar
 								{
-									logger::SILENT("EXTRA-INFO", "Clicked inside the titlebar of Pane" + std::to_string(panes[i]->PID));
+									logger::SILENT("EXTRA-INFO", "Clicked inside the titlebar of Pane" + std::to_string(processes[i]->info.pid));
 
-									if (mouseIsOver(panes[i]->closebutton, *window)) // then the close button
+									if (mouseIsOver(processes[i]->pane->closebutton, *window)) // then the close button
 									{
-										logger::SILENT("EXTRA-INFO", "Clicked the close button of Pane" + std::to_string(panes[i]->PID));
+										logger::SILENT("EXTRA-INFO", "Clicked the close button of Pane" + std::to_string(processes[i]->info.pid));
 
-										delete panes[i];
-										panes.erase(std::remove(panes.begin(), panes.end(), panes[i]), panes.end());
+										delete processes[i];
+										processes.erase(std::remove(processes.begin(), processes.end(), processes[i]), processes.end());
 										break;
 									}
 									else
@@ -119,7 +121,7 @@ void Environment::main()
 									}
 								}
 
-								if (panes[i] == focusedPane)
+								if (processes[i]->pane == focusedPane)
 								{
 									already_selected = true;
 
@@ -131,7 +133,7 @@ void Environment::main()
 								{
 									logger::SILENT("EXTRA-INFO", "Pane" + std::to_string(focusedPane->PID) + " was not already focused.");
 
-									switchFocusedPaneTo(panes[i]);
+									switchFocusedPaneTo(processes[i]->pane);
 									selected = true;
 
 									logger::SILENT("EXTRA-INFO", "Bringing Pane" + std::to_string(focusedPane->PID) + " to the top of the Render Queue.");
@@ -151,7 +153,7 @@ void Environment::main()
 
 						// if we didn't select anything, do nothing.
 						// if there is nothing we *could have* selected, do nothing (because they might have clicked the close button).
-						if (!already_selected && !panes.empty())
+						if (!already_selected && !processes.empty())
 						{
 							if (!selected)
 							{
@@ -182,7 +184,7 @@ void Environment::main()
 
 							taskbar->startButton.setFillColor(sf::Color::Green);
 
-							if (!panes.empty())
+							if (!processes.empty())
 								focusedPane->defocus(); // we defocus it because we are focused on the start menu while we do this, we will refocus when the start menu is closed.
 						}
 					}
@@ -218,32 +220,42 @@ void Environment::main()
 			{
 				if (event.key.code == sf::Keyboard::Key::N) // NEW PANE HOTKEY
 				{
-					sf::Clock creation_timer;
-
 					logger::BREAK();
-					Pane* newpane = new Pane("root//apps//test", this);
-					panes.push_back(newpane);
-					switchFocusedPaneTo(newpane);
+
+					sf::Clock creation_timer;
+					Process* newProcess = new Process(processes.size());
+
+//					Pane* newpane = new Pane("root//apps//test", this);
+					processes.push_back(newProcess);
+					switchFocusedPaneTo(newProcess->pane);
 
 					logger::INFO("Pane creation took " + std::to_string(creation_timer.getElapsedTime().asSeconds()) + " seconds.");
 					logger::BREAK();
 				}
 				else if (focusedPane != nullPane && event.key.code == sf::Keyboard::Key::Delete) // DELETE PANE HOTKEY
 				{
-					delete focusedPane;
-					panes.erase(std::remove(panes.begin(), panes.end(), focusedPane), panes.end()); // remove it from the stack
-					focusedPane = nullPane;
+					//TODO: fix this
+
+//					delete focusedPane;
+//					processes.erase(std::remove(processes.begin(), processes.end(), focusedPane), processes.end()); // remove it from the stack
+//					focusedPane = nullPane;
 				}
 			}
 		} // event loop
 
+		for (size_t i = 0; i < processes.size(); i++)
+		{
+			processes[i]->HandleEvents(event);
+			processes[i]->Update();
+		}
+
 		{
 			// if we are holding the left alt key and space at the same time, and there is at least one pane, center it.
-			if (!panes.empty() && sf::Keyboard::isKeyPressed(sf::Keyboard::Key::LAlt) && sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Space))
+			if (!processes.empty() && sf::Keyboard::isKeyPressed(sf::Keyboard::Key::LAlt) && sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Space))
 			{
 				focusedPane->setPosition(sf::Vector2f(window->getView().getCenter()));
 
-				logger::SILENT("EXTRA-INFO", "Pane" + std::to_string(focusedPane->PID) + " centered.");
+				logger::INFO("Pane" + std::to_string(focusedPane->PID) + " centered.");
 			}
 			// if we are left clicking, panes exist, and are holding over the focused one, then move it to the position of the mouse. used for click and drag positioning.
 			else if (dragging_pane)
@@ -257,7 +269,14 @@ void Environment::main()
 		}
 
 		window->clear(sf::Color::Blue);
+
 		renderer->render();
+		
+		for (size_t i = 0; i < processes.size(); i++)
+		{
+			processes[i]->Draw();
+		}
+
 		window->display();
 	}
 }

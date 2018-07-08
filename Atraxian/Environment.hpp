@@ -6,6 +6,7 @@
 class Renderer;
 class Taskbar;
 class Pane;
+class Process;
 
 class Environment
 {
@@ -15,7 +16,7 @@ public:
 
 	int environmentID;
 
-	std::vector<Pane*> panes;
+	std::vector<Process*> processes;
 	sf::RenderWindow *window;
 	Renderer *renderer;
 	Taskbar *taskbar;

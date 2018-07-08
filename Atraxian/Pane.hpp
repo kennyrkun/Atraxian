@@ -2,7 +2,6 @@
 #define PANE_HPP
 
 #include "Environment.hpp"
-#include "MapleParser.hpp"
 
 #include <SFML\Graphics.hpp>
 
@@ -17,7 +16,6 @@ public:
 	~Pane();
 
 	std::string title;
-	AppInfo paneInfo;
 
 	sf::RectangleShape mainpane;
 	sf::RectangleShape titlebar;
@@ -49,4 +47,4 @@ private:
 	void setSize(const sf::Vector2f size);
 };
 
-#endif /* PANE_HPP */
+#endif // !PANE_HPP

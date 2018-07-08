@@ -1,21 +1,11 @@
 #ifndef MAPLE_PARSER_HPP
 #define MAPLE_PARSER_HPP
 
-#include <SFML\System\Vector2.hpp>
-#include <string>
+#include "App.hpp"
 
-struct AppInfo
-{
-	std::string name;
-	std::string description;
-	sf::Vector2f dimensions;
-	std::string properties;
-	std::string author;
-	std::string copyright;
-	std::string github;
-	std::string kunlauncher;
-	std::string misc;
-};
+#include <SFML\System\Vector2.hpp>
+
+#include <string>
 
 class MapleParser
 {
@@ -29,5 +19,8 @@ private:
 	bool loadApp(std::string appdir);
 	void createApp();
 };
+
+// perhaps maple parser should do nothing in the constructor, instead it should have a function
+// seperaterly that can be called which will return an object of the class App
 
 #endif /* MAPLE_PARSER_HPP */

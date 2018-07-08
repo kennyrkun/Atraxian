@@ -10,20 +10,19 @@ const float border_width = 6.25f;
 const sf::Color focusedColour(109, 109, 109);
 const sf::Color defocusedColour(200, 200, 200);
 
-
 Pane::Pane(std::string title, Environment *env) : environment(env)
 {
-	MapleParser app(title);
-	paneInfo = app.appInfo; // TODO: get paneInfo out of here
+//	MapleParser app(title);
+//	paneInfo = app.appInfo; // TODO: get paneInfo out of here
 
-	PID = env->panes.size() + 1;
+	PID = env->processes.size() + 1;
 
 	font.loadFromFile("C:\\Windows\\Fonts\\Arial.ttf");
 	titletext.setFont(font);
 	titletext.setFillColor(sf::Color::Black);
-	title = paneInfo.name;
+//	title = paneInfo.name;
 
-	setSize(app.appInfo.dimensions);
+//	setSize(app.appInfo.dimensions);
 	setPosition(env->window->getView().getCenter());
 	setTitle(title); // relies on things being in place already
 
@@ -36,7 +35,7 @@ Pane::Pane(const sf::Vector2f size, const std::string $title, Environment *env) 
 {
 	title = $title;
 
-	PID = env->panes.size() + 1;
+	PID = env->processes.size() + 1;
 	font.loadFromFile("C:\\Windows\\Fonts\\Arial.ttf");
 	titletext.setFont(font);
 	titletext.setFillColor(sf::Color::Black);
