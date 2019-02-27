@@ -21,7 +21,6 @@ Environment::Environment(sf::VideoMode dimensions, std::string title, int envID)
 	window = std::make_shared<sf::RenderWindow>(dimensions, (title + " (" + std::to_string(envID) + ")"), (sf::Style::Close | sf::Style::Titlebar));
 	renderman = std::make_shared<Renderer>(window);
 
-
 	taskbar = std::make_shared<Taskbar>(this);
 	taskbar->time.setOrigin(sf::Vector2f(taskbar->time.getLocalBounds().width / 2, taskbar->time.getLocalBounds().height / 2));
 	taskbar->time.setPosition(sf::Vector2f((taskbar->bar.getPosition().x * 2) - (taskbar->time.getLocalBounds().width / 1.7), taskbar->bar.getPosition().y - (taskbar->time.getLocalBounds().height / 2.5)));

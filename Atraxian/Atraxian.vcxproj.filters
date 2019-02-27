@@ -8,14 +8,11 @@
     <Filter Include="Source Files\Environment">
       <UniqueIdentifier>{f036a028-f5b9-400a-b20b-be3df3b82e60}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Environment\Graphical">
-      <UniqueIdentifier>{62f58d8d-3f2b-43ee-aaf9-108a21b40321}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Environment\Graphical\Pane">
-      <UniqueIdentifier>{c245db0d-939b-4bf4-96f7-db9604de609f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Environment\Logger">
       <UniqueIdentifier>{00b54a81-ff50-40a6-8b13-a695fefcf83a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Environment\Pane">
+      <UniqueIdentifier>{c245db0d-939b-4bf4-96f7-db9604de609f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -34,14 +31,14 @@
     <ClCompile Include="Logger.cpp">
       <Filter>Source Files\Environment\Logger</Filter>
     </ClCompile>
-    <ClCompile Include="Pane.cpp">
-      <Filter>Source Files\Environment\Graphical\Pane</Filter>
-    </ClCompile>
     <ClCompile Include="Util.cpp">
       <Filter>Source Files\Environment</Filter>
     </ClCompile>
+    <ClCompile Include="Pane.cpp">
+      <Filter>Source Files\Environment</Filter>
+    </ClCompile>
     <ClCompile Include="Renderer.cpp">
-      <Filter>Source Files\Environment\Graphical</Filter>
+      <Filter>Source Files\Environment</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -57,14 +54,14 @@
     <ClInclude Include="Logger.hpp">
       <Filter>Source Files\Environment\Logger</Filter>
     </ClInclude>
-    <ClInclude Include="Pane.hpp">
-      <Filter>Source Files\Environment\Graphical\Pane</Filter>
-    </ClInclude>
     <ClInclude Include="Util.hpp">
       <Filter>Source Files\Environment</Filter>
     </ClInclude>
+    <ClInclude Include="Pane.hpp">
+      <Filter>Source Files\Environment</Filter>
+    </ClInclude>
     <ClInclude Include="Renderer.hpp">
-      <Filter>Source Files\Environment\Graphical</Filter>
+      <Filter>Source Files\Environment</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -29,6 +29,8 @@ Pane::~Pane()
 
 const sf::Color focusedColour(109, 109, 109);
 const sf::Color defocusedColour(190, 190, 190);
+const sf::Color closeButtonColor;
+const sf::Color closeButtonHoverColor;
 
 void Pane::setPosition(const sf::Vector2f newpos)
 {

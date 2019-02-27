@@ -24,6 +24,7 @@ public:
 	void switchFocusedPaneTo(Pane* pane);
 
 private:
+	// TODO: Z order
 	std::vector<Pane*> panes;
 	Pane *nullPane;
 	Pane *focusedPane = nullPane;
